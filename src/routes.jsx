@@ -6,7 +6,8 @@ import Perfil from './pages/Perfil';
 const Rotas = () => (
   <Routes>
     <Route path="/" element={<Home />} />
-    <Route path="/perfil" element={<Perfil />} />
+    {/* O :id indica que esta parte da URL é dinâmica */}
+    <Route path="/perfil/:id" element={<Perfil />} />
   </Routes>
 );
 

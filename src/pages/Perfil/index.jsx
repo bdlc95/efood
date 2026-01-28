@@ -1,34 +1,52 @@
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useGetRestauranteQuery } from '../../services/api'
+
 import Banner from '../../components/Banner'
 import ProductCard from '../../components/ProductCard'
+import Modal from '../../components/Modal'
 import { List } from '../Home/styles'
 
-// 1. Importe a imagem da pizza aqui
-import fotoPizza from '../../assets/images/pizza.svg' 
-import fotoBanner from '../../assets/images/la-dolce-banner.svg'
+const Perfil = () => {
+  const { id } = useParams()
+  const { data: restaurante, isLoading } = useGetRestauranteQuery(id)
+  
+  const [modalItem, setModalItem] = useState(null)
 
-const Perfil = () => (
-  <>
-    <Banner 
-      image={fotoBanner} 
-      category="Italiana" 
-      title="La Dolce Vita Trattoria" 
-    />
-    <div className="container">
-      <List style={{ gridTemplateColumns: '1fr 1fr 1fr' }}>
-        {/* 2. Passe a variável fotoPizza para a prop image */}
-        <ProductCard 
-          image={fotoPizza}
-          title="Pizza Marguerita" 
-          description="A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite." 
-        />
-        <ProductCard image={fotoPizza} title="Pizza Marguerita" description="A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite." />
-        <ProductCard image={fotoPizza} title="Pizza Marguerita" description="A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite." />
-        <ProductCard image={fotoPizza} title="Pizza Marguerita" description="A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite." />
-        <ProductCard image={fotoPizza} title="Pizza Marguerita" description="A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite." />
-        <ProductCard image={fotoPizza} title="Pizza Marguerita" description="A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite." />
-      </List>
-    </div>
-  </>
-)
+  if (isLoading) return <div className="container"><h3>Carregando...</h3></div>
+
+  // ADICIONE ESTA LINHA: Evita erro se a API demorar ou falhar
+  if (!restaurante) return null
+
+  return (
+    <>
+      <Banner 
+        image={restaurante.capa} 
+        category={restaurante.tipo} 
+        title={restaurante.titulo} 
+      />
+      
+      <div className="container">
+        <List style={{ gridTemplateColumns: '1fr 1fr 1fr', marginTop: '56px' }}>
+          {restaurante.cardapio.map((prato) => (
+            <ProductCard 
+              key={prato.id}
+              image={prato.foto}
+              title={prato.nome} 
+              description={prato.descricao} 
+              // Agora passamos a função para o botão dentro do card
+              onButtonClick={() => setModalItem(prato)}
+            />
+          ))}
+        </List>
+      </div>
+
+      <Modal 
+        prato={modalItem} 
+        aoFechar={() => setModalItem(null)} 
+      />
+    </>
+  )
+}
 
 export default Perfil

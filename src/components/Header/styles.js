@@ -1,17 +1,21 @@
 import styled from 'styled-components'
 
 export const HeaderContainer = styled.header`
-  background-image: url(${(props) => props.backgroundImage});
+  background-image: url(${(props) => props.$backgroundImage});
   padding: 40px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   .container {
     max-width: 1024px;
     width: 100%;
     display: flex;
     align-items: center;
+    /* MUDANÇA CRUCIAL: 'center' funciona tanto para Home (só logo) 
+       quanto para Perfil (laterais empurram o logo pro centro) */
     justify-content: center; 
   }
 `
@@ -21,7 +25,8 @@ export const LinkRestaurantes = styled.a`
   font-weight: bold;
   text-decoration: none;
   font-size: 18px;
-  width: 250px; // Adicionado: Garante espaço fixo na esquerda
+  /* MUDANÇA: Ocupa todo o espaço disponível na esquerda */
+  flex: 1; 
 `
 
 export const CarrinhoTexto = styled.span`
@@ -29,8 +34,9 @@ export const CarrinhoTexto = styled.span`
   font-weight: bold;
   font-size: 18px;
   cursor: pointer;
-  width: 250px; // Adicionado: Garante espaço fixo na direita
-  text-align: right; // Alinha o texto do carrinho no final da direita
+  /* MUDANÇA: Ocupa todo o espaço disponível na direita */
+  flex: 1; 
+  text-align: right; 
 `
 
 export const TituloHome = styled.h1`

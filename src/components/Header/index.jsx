@@ -9,22 +9,21 @@ const Header = () => {
   const isHome = location.pathname === '/'
 
   return (
-    <HeaderContainer backgroundImage={fundo}>
+    // O $backgroundImage é essencial para o styled-components não enviar lixo ao HTML
+    <HeaderContainer $backgroundImage={fundo}>
       <div className="container">
-        {!isHome && (
-          <LinkRestaurantes as={Link} to="/">
-            Restaurantes
-          </LinkRestaurantes>
-        )}
-        
-        <Link to="/">
-          <img src={logo} alt="eFood" />
-        </Link>
-
-        {!isHome && (
-          <CarrinhoTexto>
-            0 produto(s) no carrinho
-          </CarrinhoTexto>
+        {!isHome ? (
+          <>
+            <LinkRestaurantes as={Link} to="/">Restaurantes</LinkRestaurantes>
+            <Link to="/" style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+              <img src={logo} alt="eFood" />
+            </Link>
+            <CarrinhoTexto>0 produto(s) no carrinho</CarrinhoTexto>
+          </>
+        ) : (
+          <Link to="/" style={{ margin: '0 auto' }}>
+            <img src={logo} alt="eFood" />
+          </Link>
         )}
       </div>
 

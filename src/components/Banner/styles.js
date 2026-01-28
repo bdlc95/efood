@@ -9,6 +9,9 @@ export const Imagem = styled.div`
   background-position: center;
   position: relative;
   padding: 32px 0;
+  
+  /* Aqui injetamos a imagem dinamicamente */
+  background-image: url(${(props) => props.$image});
 
   &::after {
     position: absolute;
