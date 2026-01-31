@@ -1,19 +1,22 @@
-import { Provider } from 'react-redux'; // 1. Importar o Provider
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import { store } from './store'; // 2. Importar o seu Store (o arquivo index.js da pasta store)
+import { store } from './store';
+import Cart from './components/Cart';
 import Rotas from './routes';
 import GlobalStyle from './styles/GlobalStyle';
 import Footer from './components/Footer';
 import Header from './components/Header';
+// Removi o Header daqui se ele já estiver sendo chamado dentro de cada página nas Rotas
 
 function App() {
   return (
-    <Provider store={store}> {/* 3. Envolver tudo com o Provider */}
+    <Provider store={store}>
       <BrowserRouter>
         <GlobalStyle />
         <Header />
         <Rotas />
+        <Cart /> {/* O Cart fica aqui para sobrepor todo o conteúdo */}
         <Footer />
       </BrowserRouter>
     </Provider>

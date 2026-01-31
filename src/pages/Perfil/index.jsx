@@ -28,16 +28,15 @@ const Perfil = () => {
       
       <div className="container">
         <List style={{ gridTemplateColumns: '1fr 1fr 1fr', marginTop: '56px' }}>
-          {restaurante.cardapio.map((prato) => (
-            <ProductCard 
-              key={prato.id}
-              image={prato.foto}
-              title={prato.nome} 
-              description={prato.descricao} 
-              // Agora passamos a função para o botão dentro do card
-              onButtonClick={() => setModalItem(prato)}
-            />
-          ))}
+{restaurante.cardapio ? restaurante.cardapio.map((prato) => (
+  <ProductCard 
+    key={prato.id}
+    image={prato.foto}
+    title={prato.nome} 
+    description={prato.descricao} 
+    onButtonClick={() => setModalItem(prato)}
+  />
+)) : <p>Carregando pratos...</p>}
         </List>
       </div>
 

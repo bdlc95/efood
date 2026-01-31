@@ -1,15 +1,20 @@
 import { useLocation, Link } from 'react-router-dom'
-import { HeaderContainer, TituloHome, LinkRestaurantes, CarrinhoTexto } from './styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { open } from '../../store/reducers/cart'
 
+import { HeaderContainer, TituloHome, LinkRestaurantes, CarrinhoTexto } from './styles'
 import logo from '../../assets/images/logo.svg'
 import fundo from '../../assets/images/fundo.png'
 
 const Header = () => {
   const location = useLocation()
   const isHome = location.pathname === '/'
+  
+  const dispatch = useDispatch()
+  // Seleciona os itens do estado global para atualizar o contador automaticamente
+  const { items } = useSelector((state) => state.cart)
 
   return (
-    // O $backgroundImage é essencial para o styled-components não enviar lixo ao HTML
     <HeaderContainer $backgroundImage={fundo}>
       <div className="container">
         {!isHome ? (
@@ -18,7 +23,10 @@ const Header = () => {
             <Link to="/" style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
               <img src={logo} alt="eFood" />
             </Link>
-            <CarrinhoTexto>0 produto(s) no carrinho</CarrinhoTexto>
+            {/* O onClick agora chama o dispatch(open()) diretamente para garantir a abertura */}
+            <CarrinhoTexto onClick={() => dispatch(open())} style={{ cursor: 'pointer' }}>
+              {items.length} produto(s) no carrinho
+            </CarrinhoTexto>
           </>
         ) : (
           <Link to="/" style={{ margin: '0 auto' }}>
