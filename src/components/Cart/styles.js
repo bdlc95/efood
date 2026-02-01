@@ -24,10 +24,10 @@ export const CartContainer = styled.div`
 export const Sidebar = styled.aside`
   background-color: #E66767;
   z-index: 1024;
-  padding: 32px 8px 0 8px;
+  padding: 32px 8px;
   max-width: 360px;
   width: 100%;
-  overflow-y: auto; // Garante scroll se o formulário for grande
+  overflow-y: auto;
 `
 
 export const CartItem = styled.li`
@@ -73,19 +73,22 @@ export const CartItem = styled.li`
   }
 `
 
-// --- ESTES SÃO OS ESTILOS QUE FALTAVAM E CAUSAVAM O ERRO ---
-
 export const BotaoCheckout = styled.button`
   background-color: #FFEBD9;
   color: #E66767;
   border: none;
-  padding: 4px;
+  padding: 8px;
   font-weight: 700;
   font-size: 14px;
   text-align: center;
   width: 100%;
   cursor: pointer;
   margin-top: 8px;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `
 
 export const FormContainer = styled.div`
@@ -96,17 +99,24 @@ export const FormContainer = styled.div`
     font-weight: 700;
     margin-bottom: 16px;
   }
-  
-  /* Classe auxiliar para inputs lado a lado */
-  .field-group {
-    display: flex;
-    column-gap: 34px;
+
+  p.margin-bottom {
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 22px;
   }
+`
+
+// Novo componente para alinhar inputs lado a lado (Ex: CEP e Número)
+export const Row = styled.div`
+  display: flex;
+  column-gap: 34px;
 `
 
 export const InputGroup = styled.div`
   margin-bottom: 8px;
-  flex: auto; // Importante para o layout flex funcionar
+  flex: auto;
+  max-width: ${(props) => (props.maxWidth ? props.maxWidth : 'auto')};
 
   label {
     display: block;
@@ -124,5 +134,17 @@ export const InputGroup = styled.div`
     color: #4B4B4B;
     font-weight: 700;
     font-size: 14px;
+
+    &.error {
+      border: 2px solid #800000; /* Borda escura para indicar erro */
+      background-color: #ffcccc;
+    }
+  }
+
+  small {
+    color: #fff;
+    font-weight: bold;
+    display: block;
+    margin-top: 4px;
   }
 `
