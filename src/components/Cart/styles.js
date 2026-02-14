@@ -60,7 +60,6 @@ export const CartItem = styled.li`
   }
 
   .delete-btn {
-    background-image: url('https://raw.githubusercontent.com/bruno-fardin/efood/main/src/assets/images/lixeira.png');
     width: 16px; 
     height: 16px;
     border: none; 
@@ -69,7 +68,27 @@ export const CartItem = styled.li`
     bottom: 8px; 
     right: 8px;
     cursor: pointer;
-    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
+    /* Se você usar a tag <img> dentro do botão no index.jsx */
+    img {
+      width: 100%;
+      height: 100%;
+      margin-right: 0; // Remove o margin que as outras imagens do item têm
+    }
+
+    /* Caso queira usar como background (mantendo o que você já tinha) */
+    background-image: url('https://raw.githubusercontent.com/bruno-fardin/efood/main/src/assets/images/lixeira.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 `
 
@@ -107,7 +126,6 @@ export const FormContainer = styled.div`
   }
 `
 
-// Novo componente para alinhar inputs lado a lado (Ex: CEP e Número)
 export const Row = styled.div`
   display: flex;
   column-gap: 34px;
@@ -136,7 +154,7 @@ export const InputGroup = styled.div`
     font-size: 14px;
 
     &.error {
-      border: 2px solid #800000; /* Borda escura para indicar erro */
+      border: 2px solid #800000;
       background-color: #ffcccc;
     }
   }

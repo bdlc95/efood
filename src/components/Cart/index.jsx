@@ -7,11 +7,13 @@ import { close, remove, clear } from '../../store/reducers/cart'
 import { usePurchaseMutation } from '../../services/api'
 import * as S from './styles'
 
+// 1. IMPORTAR O ÍCONE (Verifique se o caminho e nome do arquivo estão corretos)
+import lixeira from '../../assets/images/lixeira.svg'
+
 const Cart = () => {
   const { isOpen, items } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
   
-  // Controle de telas: 0 = Carrinho, 1 = Entrega, 2 = Pagamento, 3 = Sucesso
   const [step, setStep] = useState(0)
   const [purchase, { isLoading, isSuccess, data }] = usePurchaseMutation()
 
@@ -39,7 +41,6 @@ const Cart = () => {
       city: Yup.string().when((_, schema) => step === 1 ? schema.required('Campo obrigatório') : schema),
       zipCode: Yup.string().when((_, schema) => step === 1 ? schema.min(9, 'CEP inválido').required('Campo obrigatório') : schema),
       number: Yup.string().when((_, schema) => step === 1 ? schema.required('Campo obrigatório') : schema),
-
       cardName: Yup.string().when((_, schema) => step === 2 ? schema.required('Campo obrigatório') : schema),
       cardNumber: Yup.string().when((_, schema) => step === 2 ? schema.required('Campo obrigatório') : schema),
       cardCode: Yup.string().when((_, schema) => step === 2 ? schema.min(3).required('Campo obrigatório') : schema),
@@ -78,11 +79,9 @@ const Cart = () => {
     }
   })
 
-  // Sincronização de sucesso e limpeza do carrinho
   useEffect(() => {
     if (isSuccess) {
       dispatch(clear())
-      // O setTimeout evita o erro de "cascading renders"
       setTimeout(() => {
         setStep(3)
       }, 0)
@@ -102,7 +101,6 @@ const Cart = () => {
       <S.Overlay onClick={handleCloseCart} />
       <S.Sidebar>
         
-        {/* PASSO 0: LISTAGEM DO CARRINHO */}
         {step === 0 && (
           <>
             {items.length > 0 ? (
@@ -115,7 +113,14 @@ const Cart = () => {
                         <h3>{item.nome}</h3>
                         <span>R$ {item.preco?.toFixed(2)}</span>
                       </div>
-                      <button className="delete-btn" onClick={() => dispatch(remove(item.id))} />
+                      {/* 2. ALTERAÇÃO AQUI: Botão agora contém a imagem da lixeira */}
+                      <button 
+                        className="delete-btn" 
+                        type="button"
+                        onClick={() => dispatch(remove(item.id))} 
+                      >
+                        <img src={lixeira} alt="Remover item" />
+                      </button>
                     </S.CartItem>
                   ))}
                 </ul>
@@ -135,7 +140,6 @@ const Cart = () => {
           </>
         )}
 
-        {/* PASSO 1 E 2: FORMULÁRIO */}
         {(step === 1 || step === 2) && (
           <S.FormContainer>
             <form onSubmit={formik.handleSubmit}>
@@ -206,7 +210,6 @@ const Cart = () => {
           </S.FormContainer>
         )}
 
-        {/* PASSO 3: SUCESSO */}
         {step === 3 && data && (
           <S.FormContainer>
             <h3>Pedido realizado - {data.orderId}</h3>
