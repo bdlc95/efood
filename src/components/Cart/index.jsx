@@ -7,7 +7,6 @@ import { close, remove, clear } from '../../store/reducers/cart'
 import { usePurchaseMutation } from '../../services/api'
 import * as S from './styles'
 
-// 1. IMPORTAR O ÍCONE (Verifique se o caminho e nome do arquivo estão corretos)
 import lixeira from '../../assets/images/lixeira.svg'
 
 const Cart = () => {
@@ -19,6 +18,22 @@ const Cart = () => {
 
   const getTotalPrice = () => {
     return items.reduce((acc, item) => acc + (item.preco || 0), 0)
+  }
+
+  const onlyNumbers = (value) => value.replace(/\D/g, '')
+
+  const handleNumericChange = (e) => {
+    const { name, value } = e.target
+    const numericValue = onlyNumbers(value)
+    
+    if (name === 'zipCode') {
+      const maskedZip = numericValue
+        .replace(/^(\d{5})(\d)/, '$1-$2')
+        .slice(0, 9)
+      formik.setFieldValue(name, maskedZip)
+    } else {
+      formik.setFieldValue(name, numericValue)
+    }
   }
 
   const formik = useFormik({
@@ -42,8 +57,8 @@ const Cart = () => {
       zipCode: Yup.string().when((_, schema) => step === 1 ? schema.min(9, 'CEP inválido').required('Campo obrigatório') : schema),
       number: Yup.string().when((_, schema) => step === 1 ? schema.required('Campo obrigatório') : schema),
       cardName: Yup.string().when((_, schema) => step === 2 ? schema.required('Campo obrigatório') : schema),
-      cardNumber: Yup.string().when((_, schema) => step === 2 ? schema.required('Campo obrigatório') : schema),
-      cardCode: Yup.string().when((_, schema) => step === 2 ? schema.min(3).required('Campo obrigatório') : schema),
+      cardNumber: Yup.string().when((_, schema) => step === 2 ? schema.min(14, 'Número inválido').required('Campo obrigatório') : schema),
+      cardCode: Yup.string().when((_, schema) => step === 2 ? schema.min(3, 'CVV inválido').required('Campo obrigatório') : schema),
       expiresMonth: Yup.string().when((_, schema) => step === 2 ? schema.required('Campo obrigatório') : schema),
       expiresYear: Yup.string().when((_, schema) => step === 2 ? schema.required('Campo obrigatório') : schema)
     }),
@@ -100,7 +115,6 @@ const Cart = () => {
     <S.CartContainer>
       <S.Overlay onClick={handleCloseCart} />
       <S.Sidebar>
-        
         {step === 0 && (
           <>
             {items.length > 0 ? (
@@ -113,7 +127,6 @@ const Cart = () => {
                         <h3>{item.nome}</h3>
                         <span>R$ {item.preco?.toFixed(2)}</span>
                       </div>
-                      {/* 2. ALTERAÇÃO AQUI: Botão agora contém a imagem da lixeira */}
                       <button 
                         className="delete-btn" 
                         type="button"
@@ -161,11 +174,11 @@ const Cart = () => {
                   <S.Row>
                     <S.InputGroup>
                       <label htmlFor="zipCode">CEP</label>
-                      <input id="zipCode" name="zipCode" type="text" maxLength="9" placeholder="00000-000" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.zipCode} className={formik.touched.zipCode && formik.errors.zipCode ? 'error' : ''} />
+                      <input id="zipCode" name="zipCode" type="text" maxLength="9" placeholder="00000-000" onChange={handleNumericChange} onBlur={formik.handleBlur} value={formik.values.zipCode} className={formik.touched.zipCode && formik.errors.zipCode ? 'error' : ''} />
                     </S.InputGroup>
                     <S.InputGroup>
                       <label htmlFor="number">Número</label>
-                      <input id="number" name="number" type="text" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.number} className={formik.touched.number && formik.errors.number ? 'error' : ''} />
+                      <input id="number" name="number" type="text" onChange={handleNumericChange} onBlur={formik.handleBlur} value={formik.values.number} className={formik.touched.number && formik.errors.number ? 'error' : ''} />
                     </S.InputGroup>
                   </S.Row>
                   <S.InputGroup>
@@ -185,21 +198,21 @@ const Cart = () => {
                   <S.Row>
                     <S.InputGroup maxWidth="228px">
                       <label htmlFor="cardNumber">Número do cartão</label>
-                      <input id="cardNumber" name="cardNumber" type="text" maxLength="19" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.cardNumber} className={formik.touched.cardNumber && formik.errors.cardNumber ? 'error' : ''} />
+                      <input id="cardNumber" name="cardNumber" type="text" maxLength="19" onChange={handleNumericChange} onBlur={formik.handleBlur} value={formik.values.cardNumber} className={formik.touched.cardNumber && formik.errors.cardNumber ? 'error' : ''} />
                     </S.InputGroup>
                     <S.InputGroup maxWidth="87px">
                       <label htmlFor="cardCode">CVV</label>
-                      <input id="cardCode" name="cardCode" type="text" maxLength="3" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.cardCode} className={formik.touched.cardCode && formik.errors.cardCode ? 'error' : ''} />
+                      <input id="cardCode" name="cardCode" type="text" maxLength="3" onChange={handleNumericChange} onBlur={formik.handleBlur} value={formik.values.cardCode} className={formik.touched.cardCode && formik.errors.cardCode ? 'error' : ''} />
                     </S.InputGroup>
                   </S.Row>
                   <S.Row>
                     <S.InputGroup>
                       <label htmlFor="expiresMonth">Mês de vencimento</label>
-                      <input id="expiresMonth" name="expiresMonth" type="text" maxLength="2" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.expiresMonth} className={formik.touched.expiresMonth && formik.errors.expiresMonth ? 'error' : ''} />
+                      <input id="expiresMonth" name="expiresMonth" type="text" maxLength="2" onChange={handleNumericChange} onBlur={formik.handleBlur} value={formik.values.expiresMonth} className={formik.touched.expiresMonth && formik.errors.expiresMonth ? 'error' : ''} />
                     </S.InputGroup>
                     <S.InputGroup>
                       <label htmlFor="expiresYear">Ano de vencimento</label>
-                      <input id="expiresYear" name="expiresYear" type="text" maxLength="4" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.expiresYear} className={formik.touched.expiresYear && formik.errors.expiresYear ? 'error' : ''} />
+                      <input id="expiresYear" name="expiresYear" type="text" maxLength="4" onChange={handleNumericChange} onBlur={formik.handleBlur} value={formik.values.expiresYear} className={formik.touched.expiresYear && formik.errors.expiresYear ? 'error' : ''} />
                     </S.InputGroup>
                   </S.Row>
                   <S.BotaoCheckout type="submit" disabled={isLoading}>{isLoading ? 'Finalizando...' : 'Finalizar pagamento'}</S.BotaoCheckout>
