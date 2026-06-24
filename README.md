@@ -1,16 +1,41 @@
-# React + Vite
+# Efood – Plataforma de Delivery
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto acadêmico desenvolvido no curso de **Desenvolvimento Full Stack React** da EBAC, replicando uma plataforma de delivery de comida com fidelidade visual a protótipos Figma.
 
-Currently, two official plugins are available:
+🔗 **[Ver projeto no ar](https://efood-brunodelima.vercel.app/)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Sobre o projeto
 
-## React Compiler
+Aplicação SPA (Single Page Application) responsiva que consome uma API REST externa para exibir restaurantes, cardápios e processar pedidos. O projeto foi desenvolvido seguindo rigorosamente protótipos de alta fidelidade do Figma, com foco em componentização, tipagem e experiência do usuário.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tecnologias utilizadas
 
-## Expanding the ESLint configuration
+- React
+- TypeScript
+- Styled Components
+- Redux Toolkit (carrinho de compras)
+- React Router DOM
+- Vite
+- API REST externa (EBAC)
+- Vercel (deploy)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Funcionalidades
+
+- Listagem de restaurantes consumida via API REST
+- Página de cardápio com detalhes de cada prato
+- Carrinho de compras com adição, remoção e atualização de itens
+- Fluxo completo de checkout
+- Layout responsivo fiel ao protótipo Figma
+
+## Como executar
+
+```bash
+# Clone o repositório
+git clone https://github.com/bdlc95/efood.git
+
+# Instale as dependências
+npm install
+
+# Execute em modo desenvolvimento
+npm run dev
+```
